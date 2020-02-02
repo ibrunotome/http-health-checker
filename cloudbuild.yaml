@@ -1,0 +1,13 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    waitFor: ["-"]
+    args:
+      - functions
+      - deploy
+      - http-health-checker
+      - --entry-point=HealthCheck
+      - --runtime=go111
+      - --trigger-http
+      - --timeout=60s
+      - --memory=128MB
+    dir: "pkg/healthchecker"
