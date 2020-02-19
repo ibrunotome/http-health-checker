@@ -4,6 +4,7 @@ import (
 	"github.com/yanzay/tbot/v2"
 	"net/http"
 	"os"
+	"time"
 )
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +17,11 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := http.Head(link)
+	c := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
+	response, err := c.Head(link)
 
 	if err != nil {
 		http.Error(w, `{"success": false,"message":"Unable to reach `+link+`"}`, http.StatusNotFound)
